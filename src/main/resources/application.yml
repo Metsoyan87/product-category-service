@@ -4,5 +4,27 @@ spring:
     username: root
     password: root
 
+
+#  jpa:
+#    properties:
+#      hibernate:
+#        hbm2ddl:
+#          auto: validate
+
   liquibase:
     change-log: classpath:/db/changelog/migration.xml
+
+jwt:
+  secret: k205j@dkjf0%^@
+  expiration: 330000
+
+
+#server:
+#  servlet:
+#    context-path: /api/v1
+
+
+# Update to base
+#  jpa:
+#    hibernate:
+#      ddl-auto: update

@@ -1,55 +1,55 @@
 package com.example.productcategoryservice.endpoint;
 
+import com.example.productcategoryservice.dto.CategoryResponseDto;
+import com.example.productcategoryservice.dto.EditCategoryDto;
+import com.example.productcategoryservice.maper.CategoryMapper;
 import com.example.productcategoryservice.model.Category;
-import com.example.productcategoryservice.model.Product;
 import com.example.productcategoryservice.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/categories")
+
 public class CategoryEndpoint {
-
-
     private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
-    @GetMapping("/category")
-    public List<Category> getAllCategory() {
-        return categoryService.findAllCategory();
+    @GetMapping
+    public List<CategoryResponseDto> getAllCategory() {
+        return categoryMapper.mapToResponseDtoList(categoryService.findAllCategory());
     }
 
-    @GetMapping("/category/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable("id") int id) {
-        Optional<Category> byId = categoryService.findCategoryById(id);
-
-        if (byId.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(byId.get());
+    @GetMapping("/byCategory/{id}")
+    public List<CategoryResponseDto> allByCategory(@PathVariable("id") int id) {
+        return categoryMapper.mapToResponseDtoList(categoryService.allCategoryById(id));
     }
 
-    @PostMapping("/category")
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryResponseDto> getCategoryById(@PathVariable("id") int id) {
+        return ResponseEntity.ok(categoryService.getById(id));//u gre es dzevov o
+    }
+
+    @PostMapping
     public ResponseEntity<?> addCategory(@RequestBody Category category) {
         categoryService.addCategory(category);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/category")
-    public ResponseEntity<Category> updateProduct(@RequestBody Category category) {
-        if (category.getId() == 0) {
-            return ResponseEntity.badRequest().build();
-        }
-        categoryService.addCategory(category);
-        return ResponseEntity.ok(category);
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryResponseDto> update(@PathVariable("id") int id,
+                                                      @RequestBody EditCategoryDto editCategoryDto) {
+        return ResponseEntity.ok(categoryService.update(id, editCategoryDto));
     }
 
-    @DeleteMapping("/category/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBookById(@PathVariable("id") int id) {
         categoryService.deleteCategoryById(id);
         return ResponseEntity.noContent().build();
     }
+
 }

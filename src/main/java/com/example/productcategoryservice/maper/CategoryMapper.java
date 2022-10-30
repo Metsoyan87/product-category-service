@@ -2,10 +2,7 @@ package com.example.productcategoryservice.maper;
 
 import com.example.productcategoryservice.dto.CategoryResponseDto;
 import com.example.productcategoryservice.dto.CreatCategoryDto;
-import com.example.productcategoryservice.dto.CreatProductDto;
-import com.example.productcategoryservice.dto.ProductResponseDto;
 import com.example.productcategoryservice.model.Category;
-import com.example.productcategoryservice.model.Product;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -14,9 +11,9 @@ import java.util.List;
 
 public interface CategoryMapper {
 
-    Product map(CreatCategoryDto creatCategoryDto);
+    Category mapToEntity(CreatCategoryDto creatCategoryDto);
 
-    CategoryResponseDto map(Category category);
+    CategoryResponseDto mapToResponseDto(Category category);
 
-    List<CategoryResponseDto> map(List<Category> categoryList);
+    List<CategoryResponseDto> mapToResponseDtoList(List<Category> categoryList);
 }

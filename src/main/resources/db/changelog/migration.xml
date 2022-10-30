@@ -9,7 +9,7 @@
 
     <changeSet author="MMetsoyan" id="initdb">
         <createTable tableName="category">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="integer" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="VARCHAR(255)">
@@ -18,21 +18,21 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="MMetsoyan" id="initdb">
-        <createTable tableName="category">
-            <column name="id" type="BIGINT" autoIncrement="true">
+    <changeSet author="MMetsoyan" id="initdb1">
+        <createTable tableName="product">
+            <column name="id" type="integer" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="title" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="count" type="BIGINT">
+            <column name="count" type="integer">
                 <constraints nullable="false"/>
             </column>
             <column name="price" type="DOUBLE">
                 <constraints nullable="false"/>
             </column>
-            <column name="category_id" type="VARCHAR(255)">
+            <column name="category_id" type="integer">
                 <constraints nullable="false"/>
             </column>
         </createTable>

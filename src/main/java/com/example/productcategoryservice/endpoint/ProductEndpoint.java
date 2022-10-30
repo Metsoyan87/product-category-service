@@ -1,6 +1,5 @@
 package com.example.productcategoryservice.endpoint;
 
-import com.example.productcategoryservice.model.Category;
 import com.example.productcategoryservice.model.Product;
 import com.example.productcategoryservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ public class ProductEndpoint {
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") int id) {
         Optional<Product> byId = productService.findById(id);
-
         if (byId.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
