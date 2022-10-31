@@ -1,5 +1,6 @@
 package com.example.productcategoryservice.dto;
 
+import com.example.productcategoryservice.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class UserDto {
     private String name;
     private String surname;
     private String email;
+    private Product product;
 
 }

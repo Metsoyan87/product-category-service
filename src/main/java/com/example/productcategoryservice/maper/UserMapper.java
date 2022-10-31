@@ -1,6 +1,6 @@
 package com.example.productcategoryservice.maper;
 
-import com.example.productcategoryservice.dto.CreateUserDto;
+import com.example.productcategoryservice.dto.UserCreateDto;
 import com.example.productcategoryservice.dto.UserDto;
 import com.example.productcategoryservice.model.User;
 import org.mapstruct.Mapper;
@@ -10,7 +10,7 @@ import org.mapstruct.Mapper;
 public interface UserMapper {
 
 //    @Mapping(target = "role", defaultValue = "USER")
-    User map(CreateUserDto createUserDto);
+    User map(UserCreateDto userCreateDto);
 
     UserDto map(User user);
 }

@@ -21,23 +21,59 @@ import java.util.Optional;
 public class UserEndpoint {
 
     private final UserRepository userRepository;
-
     private final UserService userService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
 
-    @PostMapping("/user")
-    public ResponseEntity<?> register(@RequestBody CreateUserDto createUserDto) {
-        Optional<User> existingUser = userRepository.findByEmail(createUserDto.getEmail());
+    @GetMapping("/users")
+    public List<User> getUsers() {
+        return userService.getAllUser();
+    }
+
+    @PostMapping("/user/add")
+    public ResponseEntity<?> register(@RequestBody UserCreateDto userCreateDto) {
+        Optional<User> existingUser = userRepository.findByEmail(userCreateDto.getEmail());
         if (existingUser.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        User user = userMapper.map(createUserDto);
+        User user = userMapper.map(userCreateDto);
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return ResponseEntity.ok(userMapper.map(userRepository.save(user)));
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity deleteById(@PathVariable("id") int id) {
+        userService.deleteById(id);
+        return ResponseEntity.ok().build();
+
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserSaveDto userSaveDto,
+                                              @PathVariable("id") int id) {
+        Optional<User> user = userRepository.findById(id);
+        if (!user.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        User byId = user.get();
+        if (userSaveDto.getEmail() != null) {
+            byId.setEmail(userSaveDto.getEmail());
+        }
+        if (userSaveDto.getName() != null) {
+            byId.setName(userSaveDto.getName());
+        }
+        if (userSaveDto.getSurname() != null) {
+            byId.setSurname(userSaveDto.getSurname());
+        }
+        if (userSaveDto.getPassword() != null) {
+            byId.setPassword(userSaveDto.getPassword());
+        }
+        userService.save(byId);
+        UserDto userResponseDto = userMapper.map(byId);
+        return ResponseEntity.ok(userResponseDto);
     }
 
     @PostMapping("/user/auth")
@@ -56,43 +92,5 @@ public class UserEndpoint {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @PutMapping("/users/{id}")
-    public ResponseEntity<UserDto> updateUser(@RequestBody SaveUserDto saveUserDto,
-                                              @PathVariable("id") int id) {
-        Optional<User> user = userRepository.findById(id);
-        if (!user.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        User byId = user.get();
-        if (saveUserDto.getEmail() != null) {
-            byId.setEmail(saveUserDto.getEmail());
-        }
-        if (saveUserDto.getName() != null) {
-            byId.setName(saveUserDto.getName());
-        }
-        if (saveUserDto.getSurname() != null) {
-            byId.setSurname(saveUserDto.getSurname());
-        }
-        if (saveUserDto.getPassword() != null) {
-            byId.setPassword(saveUserDto.getPassword());
-        }
-        userRepository.save(byId);
-        UserDto userResponseDto = userMapper.map(byId);
-        return ResponseEntity.ok(userResponseDto);
-    }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity deleteById(@PathVariable("id") int id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/users")
-    public List<User> getUsers() {
-        return userService.getAllUser();
-    }
 }

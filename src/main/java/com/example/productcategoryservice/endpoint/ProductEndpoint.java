@@ -1,5 +1,7 @@
 package com.example.productcategoryservice.endpoint;
 
+import com.example.productcategoryservice.dto.EditProductDto;
+import com.example.productcategoryservice.dto.ProductResponseDto;
 import com.example.productcategoryservice.model.Product;
 import com.example.productcategoryservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+
 public class ProductEndpoint {
 
     private final ProductService productService;
@@ -20,8 +23,8 @@ public class ProductEndpoint {
         return productService.findAllProducts();
     }
 
-    @GetMapping("/product/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") int id) {
+    @GetMapping("/id")
+    public ResponseEntity<Product> getProductById( int id) {
         Optional<Product> byId = productService.findById(id);
         if (byId.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -29,22 +32,18 @@ public class ProductEndpoint {
         return ResponseEntity.ok(byId.get());
     }
 
-    @PostMapping("/product")
+    @PostMapping("/product/add")
     public ResponseEntity<?> addProduct(@RequestBody Product product) {
         productService.addProduct(product);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/product")
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-        if (product.getId() == 0) {
-            return ResponseEntity.badRequest().build();
-        }
-        productService.addProduct(product);
-        return ResponseEntity.ok(product);
+    @PutMapping("/product/id")
+    public ResponseEntity<ProductResponseDto> updateProduct(@RequestBody EditProductDto editProductDto,int id) {
+        return ResponseEntity.ok(productService.update(editProductDto,id));
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBookById(@PathVariable("id") int id) {
         productService.deleteById(id);
         return ResponseEntity.noContent().build();

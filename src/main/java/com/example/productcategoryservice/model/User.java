@@ -25,4 +25,9 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @ManyToOne
+    private Product product;
+
+
 }
