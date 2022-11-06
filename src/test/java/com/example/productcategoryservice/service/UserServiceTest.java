@@ -108,13 +108,7 @@ class UserServiceTest {
         });
 
     }
-//    @Test
-//    void deleteById_notFound() {
-//        EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class, () -> {
-//            userService.deleteById(9999);
-//        });
-//        assertEquals("No class com.example.myitemsrest.entity.User entity with id 9999 exists!", thrown.getMessage());
-//    }
+
 
     @Test
     void getAllUser() {
