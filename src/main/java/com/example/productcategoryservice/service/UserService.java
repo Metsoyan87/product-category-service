@@ -33,7 +33,6 @@ public class UserService {
         userRepository.deleteById(id);
 
     }
-
     public void register(User user) {
         userRepository.save(user);
     }
