@@ -2,10 +2,7 @@ package com.example.productcategoryservice.service;
 
 import com.example.productcategoryservice.exception.BadRequestException;
 import com.example.productcategoryservice.model.Product;
-import com.example.productcategoryservice.model.Role;
-import com.example.productcategoryservice.model.User;
 import com.example.productcategoryservice.repository.ProductRepository;
-import com.example.productcategoryservice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -50,7 +47,6 @@ class ProductServiceTest {
 
     @Test
     void addProduct() {
-        int id = 1;
         Product product = Product.builder()
                 .id(1)
                 .title("assd")
@@ -104,16 +100,8 @@ class ProductServiceTest {
 
 
     }
-
-    @Test
-    void update() {
-    }
-
     @Test
     void testFindById() {
-
-
-        int id = 1;
         Product product = Product.builder()
                 .id(1)
                 .title("assd")

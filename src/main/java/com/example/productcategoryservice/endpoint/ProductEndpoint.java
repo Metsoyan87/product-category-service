@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-
 public class ProductEndpoint {
 
     private final ProductService productService;
