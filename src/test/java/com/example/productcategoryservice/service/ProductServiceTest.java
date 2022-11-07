@@ -67,6 +67,7 @@ class ProductServiceTest {
         Product captorProduct = productArgumentCaptor.getValue();
         assertThat(captorProduct).isEqualTo(product);
     }
+
     @Test
     void addProductException() {
         int id = 1;
@@ -80,9 +81,9 @@ class ProductServiceTest {
 
         given(productRepository.selectExistsEmail(product.getId()))
                 .willReturn(true);
-        assertThatThrownBy(()->productService.addProduct(product))
+        assertThatThrownBy(() -> productService.addProduct(product))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Id " + product.getId()+" taken");
+                .hasMessageContaining("Id " + product.getId() + " taken");
 
 
     }
@@ -103,7 +104,30 @@ class ProductServiceTest {
 
 
     }
+
     @Test
     void update() {
+    }
+
+    @Test
+    void testFindById() {
+
+
+        int id = 1;
+        Product product = Product.builder()
+                .id(1)
+                .title("assd")
+                .count(7)
+                .price(333.33)
+                .category(null)
+                .build();
+        productService.addProduct(product);
+        ArgumentCaptor<Product> productArgumentCaptor =
+                ArgumentCaptor.forClass(Product.class);
+        verify(productRepository)
+                .save(productArgumentCaptor.capture());
+
+        Product captorProduct = productArgumentCaptor.getValue();
+        assertThat(captorProduct).isEqualTo(product);
     }
 }
