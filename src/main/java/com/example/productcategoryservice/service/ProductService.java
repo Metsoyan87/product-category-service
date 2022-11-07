@@ -2,6 +2,7 @@ package com.example.productcategoryservice.service;
 
 import com.example.productcategoryservice.dto.EditProductDto;
 import com.example.productcategoryservice.dto.ProductResponseDto;
+import com.example.productcategoryservice.exception.BadRequestException;
 import com.example.productcategoryservice.maper.ProductMapper;
 import com.example.productcategoryservice.model.Product;
 import com.example.productcategoryservice.repository.ProductRepository;
@@ -27,6 +28,12 @@ public class ProductService {
     }
 
     public void addProduct(Product product) {
+        Boolean existsEmail = productRepository.
+                selectExistsEmail(product.getId());
+        if (existsEmail){
+            throw new BadRequestException("Id " + product.getId()+" taken");
+        }
+
         productRepository.save(product);
     }
 
